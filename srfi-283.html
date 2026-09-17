@@ -65,8 +65,8 @@ The editor will add this section.</p>
   This SRFI focuses on the introspection and type inference sides of typing / checking.
   It provides several useful procedures deriving types / checks for arbitrary data.
   <a href="#spec--check--procedure">procedure-check-of</a> and <a href="#spec--check--value">check-of</a> work with checks, as in SRFI 253.
-  <a href="#spec--procedure-type-of">procedure-type-of</a> and <a href="#spec--type--value">type-of</a> work with implementation-specific types.
-  <a href="#spec--check-to-sexp">check-&gt;sexp</a> provides a way to serialize opaque checks from above into more readable s-expressions.
+  <a href="#spec--type--procedure">procedure-type-of</a> and <a href="#spec--type--value">type-of</a> work with implementation-specific types.
+  <a href="#spec--util--check-to-sexp">check-&gt;sexp</a> provides a way to serialize opaque checks from above into more readable s-expressions.
 </p>
 
 <h2 id="issues">Issues</h2>
@@ -107,7 +107,7 @@ The editor will add this section.</p>
   whatever they might mean.
 </p>
 
-<h3 id=spec--check>Check-level API <a href="#spec--check-level">#</a></h3>
+<h3 id="spec--check">Check-level API <a href="#spec--check">#</a></h3>
 
 <p>
   Checks, using the terminology of SRFI 253, might be the wrong basis for program checking.

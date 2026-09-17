@@ -111,6 +111,15 @@ and allows peeking behind the implementation scaffolds for types.
   whatever they might mean.
 </p>
 
+<div class=note>
+  <p>
+    Notation used in procedure signatures needs an extra explanation.
+    Square brackets (<code>[]</code>) denote a list of values of certain type, like in Haskell.
+    While vertical bar (<code>|</code>) denotes a union type.
+    So something like <code>[pair | integer | #f]</code> means “a list of either pairs, integers, or false.”
+  </p>
+</div>
+
 <h3 id="spec--check">Check-level API <a href="#spec--check">#</a></h3>
 
 <p>

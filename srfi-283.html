@@ -164,8 +164,7 @@ and allows peeking behind the implementation scaffolds for types.
             But this glaring under-design of this SRFI is offset by the fact that multiple-arity procedures are problematic in many ways when it comes to checks.
         </ul>
     </ul>
-  <li> The second value is a list of checks (procedures), one per returned value of the procedure.
-  <li> Either of these value checks may be <code>#f</code> for unknown check value or values for which the check cannot be otherwise introspected.
+  <li> The second value is a list of checks (procedures), one per returned value of the procedure. Any of these return checks may be <code>#f</code>.
 </ul>
 
 <p>

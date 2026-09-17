@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
 -->
   <head>
     <meta charset="utf-8">
-    <title>SRFI ###: (Type-)Check Introspection</title>
+    <title>SRFI 283: (Type-)Check Introspection</title>
     <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png">
     <link rel="stylesheet" href="https://srfi.schemers.org/srfi.css" type="text/css">
     <link rel="stylesheet" href="https://srfi.schemers.org/admin.css" type="text/css">
@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
     </style>
   </head>
   <body>
-    <h1><a href="https://srfi.schemers.org/"><img class="srfi-logo" src="https://srfi.schemers.org/srfi-logo.svg" alt="SRFI surfboard logo" /></a>###: (Type-)Check Introspection</h1>
+    <h1><a href="https://srfi.schemers.org/"><img class="srfi-logo" src="https://srfi.schemers.org/srfi-logo.svg" alt="SRFI surfboard logo" /></a>283: (Type-)Check Introspection</h1>
 
 <p>by Artyom Bologov</p>
 
@@ -135,7 +135,7 @@ will not appear in the final SRFI.</p>
     <a href="#spec--util--check-to-sexp">check-&gt;sexp</a> procedure to turn checks into parseable s-expressions.
 </div>
 
-<h4 id=spec--check--procedure>(srfi XXX) procedure-check-of proc ⟹ #f | [procedure | #f], #f | [procedure | #f] <a href="#spec--check--procedure">#</a></h4>
+<h4 id=spec--check--procedure>(srfi 283) procedure-check-of proc ⟹ #f | [procedure | #f], #f | [procedure | #f] <a href="#spec--check--procedure">#</a></h4>
 
 <p>
   Procedure check introspection API.
@@ -192,7 +192,7 @@ will not appear in the final SRFI.</p>
 ;; =&gt; (#&lt;procedure (<a href="https://srfi.schemers.org/srfi-235/srfi-235.html#specification:~:text=%28%28-,disjoin%20predicate%20%2E%2E%2E,-%29%20arg%20%2E%2E%2E%29">disjoin</a> list? boolean?)&gt; #&lt;procedure (disjoin list? boolean?)&gt;)
 </pre>
 
-<h4 id=spec--check--value>(srfi XXX) check-of obj ⟹ procedure | #f <a href="#spec--check--value">#</a></h4>
+<h4 id=spec--check--value>(srfi 283) check-of obj ⟹ procedure | #f <a href="#spec--check--value">#</a></h4>
 
 <p>
   Returns the most exact check matching the value, as a procedure that this value must satisfy.
@@ -218,7 +218,7 @@ will not appear in the final SRFI.</p>
   This section details on the forms working with types instead of checks.
 </p>
 
-<h4 id=spec--type--procedure>(srfi XXX) procedure-type-of proc ⟹ implementation-specific <a href="#spec--type--procedure">#</a></h4>
+<h4 id=spec--type--procedure>(srfi 283) procedure-type-of proc ⟹ implementation-specific <a href="#spec--type--procedure">#</a></h4>
 
 <p>
   Returns an implementation-specific number of implementation-specific values characterizing the given procedure.
@@ -229,7 +229,7 @@ will not appear in the final SRFI.</p>
   Returning a single type object for procedures (like <code>+</code>) that accept a single rest argument is possible too.
 </p>
 
-<h4 id=spec--type--value>(srfi XXX) type-of obj ⟹ implementation-specific <a href="#spec--type--value">#</a></h4>
+<h4 id=spec--type--value>(srfi 283) type-of obj ⟹ implementation-specific <a href="#spec--type--value">#</a></h4>
 
 <p>
   Returns an implementation-specific object representing the type of <var>obj</var>.
@@ -237,7 +237,7 @@ will not appear in the final SRFI.</p>
 </p>
 
 <h3 id=spec--util>Utilities <a href="#spec--util">#</a></h3>
-<h4 id=spec--util--check-to-sexp>(srfi XXX) check-&gt;sexp proc ⟹ list | symbol | #f <a href="#spec--util--check-to-sexp">#</a></h4>
+<h4 id=spec--util--check-to-sexp>(srfi 283) check-&gt;sexp proc ⟹ list | symbol | #f <a href="#spec--util--check-to-sexp">#</a></h4>
 
 <p>
   Working with checking procedures is not entirely worryless.

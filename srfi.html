@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+SPDX-FileCopyrightText: 2026 Artyom Bologov
+SPDX-License-Identifier: MIT
+-->
+  <head>
+    <meta charset="utf-8">
+    <title>SRFI ###: (Type-)Check Introspection</title>
+    <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png">
+    <link rel="stylesheet" href="https://srfi.schemers.org/srfi.css" type="text/css">
+    <link rel="stylesheet" href="https://srfi.schemers.org/admin.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      .note {
+          border: 0.1em solid var(--fg);
+          border-radius: 0.2em;
+          padding: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1><a href="https://srfi.schemers.org/"><img class="srfi-logo" src="https://srfi.schemers.org/srfi-logo.svg" alt="SRFI surfboard logo" /></a>###: (Type-)Check Introspection</h1>
+
+<p>by Artyom Bologov</p>
+
+<h2 id="status">Status</h2>
+
+<p style="color: red;">For editor's use only.  Please do not edit this section.</p>
+
+<p>??? the draft/final/withdrawn status of the SRFI, information on how
+to subscribe to its mailing list, and important dates in its history.
+The editor will add this section.</p>
+
+<h2 toc>Table of Contents</h2>
+
+<ul>
+  <li> <a href="#abstract">Abstract</a>
+  <li> <a href="#rationale">Rationale</a>
+  <li> <a href="#spec">Specification</a>
+    <ul>
+      <li> <a href="#spec--check">Check-level API</a>
+        <ul>
+          <li> <a href="#spec--check--procedure">procedure-check-of proc</a>
+          <li> <a href="#spec--check--value">check-of obj</a>
+        </ul>
+      <li> <a href="#spec--type">Type-level API</a>
+        <ul>
+          <li> <a href="#spec--type--procedure">procedure-type-of proc</a>
+          <li> <a href="#spec--type--value">type-of proc</a>
+        </ul>
+      <li> <a href="#spec--util">Utilities</a>
+        <ul>
+          <li> <a href="#spec--util--check-to-sexp">check-&gt;sexp proc</a>
+        </ul>
+    </ul>
+    <li> <a href="#implementation">Implementation</a>
+    <li> <a href="#acknowledgements">Acknowledgements</a>
+    <li> <a href="#copyright">Copyright</a>
+</ul>
+
+<h2 id="abstract">Abstract</h2>
+
+<p>
+  This SRFI focuses on the introspection and type inference sides of typing / checking.
+  It provides several useful procedures deriving types / checks for arbitrary data.
+  <a href="#spec--check--procedure">procedure-check-of</a> and <a href="#spec--check--value">check-of</a> work with checks, as in SRFI 253.
+  <a href="#spec--procedure-type-of">procedure-type-of</a> and <a href="#spec--type--value">type-of</a> work with implementation-specific types.
+  <a href="#spec--check-to-sexp">check-&gt;sexp</a> provides a way to serialize opaque checks from above into more readable s-expressions.
+</p>
+
+<h2 id="issues">Issues</h2>
+
+<p>??? Optional section that may point out things to be resolved.  This
+will not appear in the final SRFI.</p>
+
+<h2 id="rationale">Rationale</h2>
+
+<p>
+  Types / checks / contracts / assertions are useful.
+  (The claim is debatable.)
+  They might help ensure program correctness and prevent basic programming errors.
+  But yet another function of these is explanatory.
+  They help in setting the expectations, e.g., for what the procedure accepts and what it returns.
+  Or understanding what the implementation-specific effective type for a value is.
+  Having a way to infer / deduce / fetch types et al. for a procedure or a value is an important introspection mechanism.
+  Thus this SRFI:
+  to augment the declarative side of <a href="https://srfi.schemers.org/srfi-253/srfi-253.html">SRFI 253</a> and <a href="https://srfi.schemers.org/srfi-273/srfi-273.html">SRFI 273</a>
+  with more explanatory power.
+  And to allow peeking behind the implementation scaffolds for types.
+</p>
+
+<p>
+  The idea of checks and check-level introspection is (un)fortunately inherited from
+  <a href="https://srfi.schemers.org/srfi-253/srfi-253.html">SRFI 253</a>.
+  The idea of type-level introspection was always on the surface in most Scheme implementations.
+  Overall, this SRFI does nothing revolutionary (unless one is a static typing enthusiast thinking of types as a non-introspectable purely compile-time artifact.)
+</p>
+
+<h2 id="spec">Specification</h2>
+
+<p>
+  There are two main concepts / levels in this specification: check-level and type-level.
+  Check level focuses on checks, as per SRFI-253 and SRFI-273,
+  while type level is based on an (inherently) implementation-specific notion of types.
+  Whatever they might mean.
+</p>
+
+<h3 id=spec--check>Check-level API <a href="#spec--check-level">#</a></h3>
+
+<p>
+  Checks, using the terminology of SRFI-253, might be the wrong basis for program checking.
+  <a href="#spec--type">Types might be the right one</a>.
+  (One has yet to prove either.)
+  However, checks capture inherent dynamicity of Scheme values and are flexible enough for useful contract declaration.
+  Introspecting the checks attached to the value / symbol / procedure is as useful as defining them.
+  This section defines two procedures providing a complete set of introspection operations on procedures and values.
+</p>
+
+<p>
+  Given that SRFI-253 et al. serve as a portable façade for implementation-specific types,
+  implementors are encouraged to infer checks even for things only having implementation-specific types.
+  Thus making APIs in this section a superset of the next one.
+</p>
+
+<div class=note>
+    There’s a peculiar choice of returning procedures instead of more introspectable s-expressions.
+    It is motivated by the fact that s-expressions may be interpreted
+    (<a href="https://standards.scheme.org/r7rs-html5/index.html#eval">eval</a>-uated)
+    in different ways depending on the context / environment.
+    Returning procedures, on the other hand, ensures that there are no ambiguous interpretations.
+    Thanks to Peter McGoron for bringing this up on the
+    <a href="https://srfi-email.schemers.org/srfi-273/msg/40504840/">SRFI 273 mailing list</a>.
+    In case one does direly need s-expressions, they can use the
+    <a href="#spec--util--check-to-sexp">check-&gt;sexp</a> procedure to turn checks into parseable s-expressions.
+</div>
+
+<h4 id=spec--check--procedure>(srfi XXX) procedure-check-of proc ⟹ #f | [procedure | #f], #f | [procedure | #f] <a href="#spec--check--procedure">#</a></h4>
+
+<p>
+  Procedure check introspection API.
+  Accepts a procedure, possibly defined with
+  <a href="https://srfi.schemers.org/srfi-253/srfi-253.html#spec--define-checked">SRFI 253 syntax</a>
+  or otherwise checked / typed.
+  Returns two values:
+</p>
+
+<ul>
+  <li> The first value is a list of checks (procedures) for each required argument of <var>proc</var>, or <code>#f</code> for arguments that don’t have a check or otherwise cannot be introspected.
+    These checks (whenever non-false) must return a true value when applied to a respective argument that the <var>proc</var> may accept.
+    Otherwise, it is an error, as per SRFI-253.
+    <ul>
+      <li>The list of checks cannot be dotted.
+        Even if the introspected procedure has a rest argument.
+        This is due to the nature of SRFI-253/273-made checks—they cannot be attached to rest arguments.
+        Even on implementations that support rest arguments in <code>*-checked</code> macros.
+        <ul>
+          <li> This in particular might mean that procedures defined with <code>case-lambda(-checked)</code> only get checks for the required arguments.
+            But this glaring under-design of this SRFI is offset by the fact that multiple-arity procedures are problematic in many ways when it comes to checks.
+        </ul>
+    </ul>
+  <li> The second value is a list of checks (procedures,) one per returned value of the procedure.
+  <li> Either of these value checks may be <code>#f</code> for unknown check value or values for which the check cannot be otherwise introspected.
+</ul>
+
+<p>
+  Either of the returned values may be <code>#f</code> in case the implementation cannot provide the checks for arguments and / or returned values.
+  For whatever reason and at any time.
+  Including: always.
+</p>
+
+<div class=note>
+    Rationale: this procedure is needed because it is necessary to get checks for both arguments and return values.
+    Fitting all of these into a single returned procedure is nigh impossible.
+    Earlier drafts of SRFI-273 included such a procedure / syntax, <code>check-procedure-of?</code>, but it was removed for reasons.
+    Thus this particular operation and its return values.
+</div>
+
+<pre>
+(procedure-check-of <a href="https://standards.scheme.org/r7rs-html5/index.html#procedure?">procedure?</a>)
+;; =&gt; (#f) ;; No check due to “any” type
+;; =&gt; (<a href="https://standards.scheme.org/r7rs-html5/index.html#boolean?">#&lt;procedure boolean?&gt;</a>)
+(procedure-check-of <a href="https://standards.scheme.org/r7rs-html5/index.html#map">map</a>)
+;; Notice the lack of optional arguments checks
+;; =&gt; (#&lt;procedure procedure?&gt; <a href="https://standards.scheme.org/r7rs-html5/index.html#list?">#&lt;procedure list?&gt;</a>)
+;; =&gt; (#&lt;procedure list?&gt;)
+(procedure-check-of <a href="https://standards.scheme.org/r7rs-html5/index.html#+">+</a>)
+;; =&gt; () ;; + has no required arguments
+;; =&gt; (<a href="https://standards.scheme.org/r7rs-html5/index.html#number?">#&lt;procedure number?&gt;</a>)
+(procedure-check-of procedure-check-of)
+;; =&gt; (#&lt;procedure procedure?&gt;)
+;; =&gt; (#&lt;procedure (<a href="https://srfi.schemers.org/srfi-235/srfi-235.html#specification:~:text=%28%28-,disjoin%20predicate%20%2E%2E%2E,-%29%20arg%20%2E%2E%2E%29">disjoin</a> list? boolean?)&gt; #&lt;procedure (disjoin list? boolean?)&gt;)
+</pre>
+
+<h4 id=spec--check--value>(srfi XXX) check-of obj ⟹ procedure | #f <a href="#spec--check--value">#</a></h4>
+
+<p>
+  Returns the most exact check matching the value, as a procedure that this value must satisfy.
+  Interpretation of “the most exact check” is left to the implementor.
+  (Might overlap with <a https://www.lispworks.com/documentation/HyperSpec/Body/26_glo_a.htm#actual_array_element_type>Common Lisp’s concept of “actual type”</a>.)
+  Implementation can also return <code>#f</code> in case the check cannot be introspected.
+  Or at any time really.
+</p>
+
+<pre>
+(check-of 3)
+;; =&gt; <a href="https://standards.scheme.org/r7rs-html5/index.html#exact-integer?">#&lt;procedure exact-integer?&gt;</a>
+(check-of check-of)
+;; =&gt; <a href="https://standards.scheme.org/r7rs-html5/index.html#procedure?">#&lt;procedure procedure?&gt;</a>
+</pre>
+
+<h3 id=spec--type>Type-level API</h3>
+
+<p>
+  While checks might be a useful and portable way to reason about values,
+  a more concrete and close-to-the-metal / implementation-specific introspection migth be needed.
+  Like… types.
+  This section details on the forms working with types instead of checks.
+</p>
+
+<h4 id=spec--type--procedure>(srfi XXX) procedure-type-of proc ⟹ implementation-specific <a href="#spec--type--procedure">#</a></h4>
+
+<p>
+  Returns an implementation-specific number of implementation-specific values characterizing the given procedure.
+  It is recommended to follow the format of
+  <a href="#spec--check--procedure">procedure-check-of</a>—two pairs / booleans of types.
+  Unlike <code>procedure-check-of</code>, returning a dotted list for arguments is possible,
+  as some implementations type the rest argument too.
+  Returning a single type object for procedures (like <code>+</code>) that accept a single rest argument is possible too.
+</p>
+
+<h4 id=spec--type--value>(srfi XXX) type-of obj ⟹ implementation-specific <a href="#spec--type--value">#</a></h4>
+
+<p>
+  Returns an implementation-specific object representing the type of <var>obj</var>.
+  This is included by some implementations already.
+</p>
+
+<h3 id=spec--util>Utilities <a href="#spec--util">#</a></h3>
+<h4 id=spec--util--check-to-sexp>(srfi XXX) check-&gt;sexp proc ⟹ list | symbol | #f <a href="#spec--util--check-to-sexp">#</a></h4>
+
+<p>
+  Working with checking procedures is not entirely worryless.
+  Given that Scheme has no <a href="https://srfi.schemers.org/srfi-279/srfi-279.html#spec--properties--procedure">procedure introspection</a> facilities in the standard,
+  even getting a procedure name is an adventure in itself.
+  Thus the need for a helper that’d translate the opaque procedures into something printable and graspable.
+</p>
+
+<p>
+  <code>check-&gt;sexp</code> converts the passed-in check procedure
+  into a symbol (in case of simple predicates, like <code>integer?</code>;)
+  list (for more complex ones, like <code>(cut eqv? <> 3)</code>,)
+  or returns <code>#f</code> (in case the conversion is unsuccessful.)
+</p>
+
+<h4 id=spec--util--symbol>Symbol Type Introspection</h4>
+
+<p>
+  Early drafts of this SRFI included <code>symbol-check-of</code> and <code>symbol-type-of</code> procedures.
+  Getting the check / type metadata attached to the symbol.
+  These were supposed to be useful in case the domain of the symbol was wider than the domain of the value currently bound to it.
+  Say, with a symbol restricted to reals, while its value is an exact integer.
+  Both procedures were removed because interpretation of a symbol involves questions of environment management and evaluation.
+  These are too expansive for a simple SRFI like this one, thus the removal.
+</p>
+
+<p>
+  Implementations might add these procedures if they wish to.
+  But the complicated questions have to be answered for these.
+</p>
+
+<h2 id="implementation">Implementation</h2>
+
+<p>??? explanation of how it meets the sample implementation
+requirement (see <a href="srfi-process.html">process</a>), and the
+code, if possible, or a link to it</p>
+
+<p>We use the phrase <dfn>sample implementation</dfn> instead of
+<dfn>reference implementation</dfn> because the latter implies that
+the implementation itself is the source of truth, whereas for SRFIs,
+the document is normative.</p>
+
+<a href="srfi-minus-???-sample.scm">Source for the sample implementation.</a>
+
+<h2 id="acknowledgements">Acknowledgements</h2>
+
+<p>
+  Thanks to Peter McGoron for the discussion of an earlier design of this SRFI, then part of SRFI 273.
+</p>
+
+<p>
+  Thanks to Arthur Gleckler for shepherding the SRFI process all these years.
+</p>
+
+<h2 id="copyright">Copyright</h2>
+<p>&copy; 2026 Artyom Bologov.</p>
+
+<p>
+  Permission is hereby granted, free of charge, to any person
+  obtaining a copy of this software and associated documentation files
+  (the "Software"), to deal in the Software without restriction,
+  including without limitation the rights to use, copy, modify, merge,
+  publish, distribute, sublicense, and/or sell copies of the Software,
+  and to permit persons to whom the Software is furnished to do so,
+  subject to the following conditions:</p>
+
+<p>
+  The above copyright notice and this permission notice (including the
+  next paragraph) shall be included in all copies or substantial
+  portions of the Software.</p>
+
+<p>
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+  BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.</p>
+
+  <hr>
+  <address>Editor: <a href="mailto:srfi-editors+at+srfi+dot+schemers+dot+org">Arthur A. Gleckler</a></address></body></html>

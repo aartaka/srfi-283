@@ -53,6 +53,7 @@ SPDX-License-Identifier: MIT
       <li> <a href="#spec--util">Utilities</a>
         <ul>
           <li> <a href="#spec--util--check-to-sexp">check-&gt;sexp proc</a>
+          <li> <a href="#spec--util--type-to-check">check-&gt;sexp proc</a>
         </ul>
     </ul>
     <li> <a href="#implementation">Implementation</a>
@@ -255,6 +256,16 @@ and allows peeking behind the implementation scaffolds for types.
   into a symbol (in case of simple predicates, like <code>integer?</code>),
   list (for more complex ones, like <code>(cut eqv? &lt;> 3)</code>),
   or returns <code>#f</code> (in case the conversion is unsuccessful).
+</p>
+
+<h4 id=spec--util--type-to-check>(srfi 283) type-&gt;check implementation-specific ⟹ procedure | #f <a href="#spec--util--type-to-check">#</a></h4>
+
+<p>
+  As implementation-specific types are inherently… implementation-specific,
+  one needs a way to portably handle them.
+  Converting these to checks is the easiest way to do so.
+  <code>type-&gt;check</code> does exactly that—it takes an implementation-specific type object and returns a check matching it.
+  Or <code>#f</code> in case this check cannot be inferred for some reason.
 </p>
 
 <h4 id=spec--util--symbol>Symbol Type Introspection</h4>

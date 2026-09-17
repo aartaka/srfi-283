@@ -223,15 +223,18 @@ and allows peeking behind the implementation scaffolds for types.
   This section details on the forms working with types instead of checks.
 </p>
 
-<h4 id=spec--type--procedure>(srfi 283) procedure-type-of proc ⟹ implementation-specific <a href="#spec--type--procedure">#</a></h4>
+<h4 id=spec--type--procedure>(srfi 283) procedure-type-of proc ⟹ pair | implementation-specific | #f, [implementation-specific | #f] | #f <a href="#spec--type--procedure">#</a></h4>
 
 <p>
-  Returns an implementation-specific number of implementation-specific values characterizing the given procedure.
-  It is recommended to follow the format of
-  <a href="#spec--check--procedure">procedure-check-of</a>—two pairs / booleans of types.
+  Returns a <a href="#spec--check--procedure">procedure-check-of</a>-like values—two pairs / booleans of types.
   Unlike <code>procedure-check-of</code>, returning a dotted list for arguments is possible,
   as some implementations type the rest argument too.
-  Returning a single type object for procedures (like <code>+</code>) that accept a single rest argument is possible, too.
+  Returning a single type object as first value for procedures (like <code>+</code>) that accept a single rest argument is possible, too.
+</p>
+
+<p>
+  Types are inherently implementation-specific objects and thus have little introspection potential.
+  <a href="#spec--util--type-to-check">type-&gt;check</a> allows to turn them into more portable and manipulable checks.
 </p>
 
 <h4 id=spec--type--value>(srfi 283) type-of obj ⟹ implementation-specific <a href="#spec--type--value">#</a></h4>

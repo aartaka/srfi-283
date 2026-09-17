@@ -198,7 +198,7 @@ The editor will add this section.</p>
 <p>
   Returns the most exact check matching the value, as a procedure that this value must satisfy.
   Interpretation of “the most exact check” is left to the implementor.
-  (It might overlap with <a https://www.lispworks.com/documentation/HyperSpec/Body/26_glo_a.htm#actual_array_element_type>Common Lisp’s concept of “actual type”</a>.)
+  (It might overlap with <a href="https://www.lispworks.com/documentation/HyperSpec/Body/26_glo_a.htm#actual_array_element_type">Common Lisp’s concept of “actual type”</a>.)
   The implementation can also return <code>#f</code> in case the check cannot be introspected &mdash;
   or at any time really.
 </p>
@@ -250,7 +250,7 @@ The editor will add this section.</p>
 <p>
   <code>check-&gt;sexp</code> converts the passed-in check procedure
   into a symbol (in case of simple predicates, like <code>integer?</code>),
-  list (for more complex ones, like <code>(cut eqv? <> 3)</code>),
+  list (for more complex ones, like <code>(cut eqv? &lt;> 3)</code>),
   or returns <code>#f</code> (in case the conversion is unsuccessful).
 </p>
 

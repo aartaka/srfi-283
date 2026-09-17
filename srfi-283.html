@@ -79,17 +79,19 @@ SPDX-License-Identifier: MIT
 <h2 id="rationale">Rationale</h2>
 
 <p>
-  Types / checks / contracts / assertions are useful.
-  (The claim is debatable.)
-  They might help ensure program correctness and prevent basic programming errors.
-  But yet another function of these is explanatory.
-  They help in setting the expectations, e.g., for what the procedure accepts and what it returns.
-  Or understanding what the implementation-specific effective type for a value is.
-  Having a way to infer / deduce / fetch types et al. for a procedure or a value is an important introspection mechanism.
-  Thus this SRFI:
-  to augment the declarative side of <a href="https://srfi.schemers.org/srfi-253/srfi-253.html">SRFI 253</a> and <a href="https://srfi.schemers.org/srfi-273/srfi-273.html">SRFI 273</a>
-  with more explanatory power,
-  and to allow peeking behind the implementation scaffolds for types.
+  Introspection of requirements for procedure arguments and guarantees of
+  return types enables programming support like as-you-type validity
+  checks.
+  They help in setting the expectations, e.g., for what the
+  procedure accepts and what it returns.
+  Or understanding the implementation-specific effective type for a value.
+</p>
+
+<p>
+This SRFI provides a way to fetch types et al. for procedures and values.
+It augments the declarative side of <a href="https://srfi.schemers.org/srfi-253/srfi-253.html">SRFI 253</a>
+and <a href="https://srfi.schemers.org/srfi-273/srfi-273.html">SRFI 273</a> with more explanatory power,
+and allows peeking behind the implementation scaffolds for types.
 </p>
 
 <p>
@@ -279,6 +281,10 @@ SPDX-License-Identifier: MIT
 
 <p>
   Thanks to Peter McGoron for the discussion of an earlier design of this SRFI, then part of SRFI 273.
+</p>
+
+<p>
+  Thanks to Arne Babenhauserheide for a splendid revision of the Rationale section.
 </p>
 
 <p>

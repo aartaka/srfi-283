@@ -164,7 +164,7 @@ and allows peeking behind the implementation scaffolds for types.
     These checks (whenever non-false) must return a true value when applied to a respective argument that the <var>proc</var> may accept.
     Otherwise, it is an error, as per SRFI 253.
     <ul>
-      <li> The list of checks can be dotted, providing type for the rest argument as the dotted tail.
+      <li> The list of checks can be dotted, providing the check that all optional arguments must satisfy.
       <li> A single procedure can be returned instead of the list of checks, in case the <var>proc</var> only accepts a typed rest argument.
     </ul>
   <li> The second value is a list of checks (procedures), one per returned value of the procedure. Any of these return checks may be <code>#f</code>.
@@ -240,13 +240,16 @@ and allows peeking behind the implementation scaffolds for types.
 ;; Using Chibi Scheme syntax
 (procedure-type-of +)
 ;; => #&lt;type "Number"&gt;
-;; => #&lt;type "Number"&gt;
+;; => (#&lt;type "Number"&gt;)
 (procedure-type-of vector-ref)
 ;; => (#&lt;type "Vector"&gt; #&lt;type "Integer"&gt;)
-;; => #f
+;; => (#f)
+(procedure-type-of substring)
+;; => (#&lt;type "String"&gt; #&lt;type "Integer"&gt; . #&lt;type "Integer"&gt;)
+;; => (#&lt;type "String"&gt;)
 (procedure-type-of procedure-type-of)
 ;; => (#&lt;type "Procedure"&gt;)
-;; => #f
+;; => (#f)
 </pre>
 
 <h4 id=spec--type--value>(srfi 283) type-of obj ⟹ implementation-specific <a href="#spec--type--value">#</a></h4>

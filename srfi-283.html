@@ -236,12 +236,33 @@ and allows peeking behind the implementation scaffolds for types.
   <a href="#spec--util--type-to-check">type-&gt;check</a> allows to turn them into more portable and manipulable checks.
 </p>
 
+<pre>
+;; Using Chibi Scheme syntax
+(procedure-type-of +)
+;; => #&lt;type "Number"&gt;
+;; => #&lt;type "Number"&gt;
+(procedure-type-of vector-ref)
+;; => (#&lt;type "Vector"&gt; #&lt;type "Integer"&gt;)
+;; => #f
+(procedure-type-of procedure-type-of)
+;; => (#&lt;type "Procedure"&gt;)
+;; => #f
+</pre>
+
 <h4 id=spec--type--value>(srfi 283) type-of obj ⟹ implementation-specific <a href="#spec--type--value">#</a></h4>
 
 <p>
   Returns an implementation-specific object representing the type of <var>obj</var>.
   This is included by some implementations already.
 </p>
+
+<pre>
+;; Examples from Chibi Scheme
+(type-of 3)
+;; #&lt;type "Integer"&gt;
+(type-of vector-copy!)
+#&lt;type "Procedure"&gt;
+</pre>
 
 <h3 id=spec--util>Utilities <a href="#spec--util">#</a></h3>
 

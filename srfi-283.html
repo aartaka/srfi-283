@@ -149,7 +149,7 @@ and allows peeking behind the implementation scaffolds for types.
     <a href="#spec--util--check-to-sexp">check-&gt;sexp</a> procedure to turn checks into parseable s-expressions.
 </div>
 
-<h4 id=spec--check--procedure>(srfi 283) procedure-check-of proc ⟹ #f | [procedure | #f], #f | [procedure | #f] <a href="#spec--check--procedure">#</a></h4>
+<h4 id=spec--check--procedure>(srfi 283) procedure-check-of proc ⟹ pair | procedure | #f, [procedure | #f] | #f <a href="#spec--check--procedure">#</a></h4>
 
 <p>
   Procedure check introspection API.
@@ -164,14 +164,8 @@ and allows peeking behind the implementation scaffolds for types.
     These checks (whenever non-false) must return a true value when applied to a respective argument that the <var>proc</var> may accept.
     Otherwise, it is an error, as per SRFI 253.
     <ul>
-      <li>The list of checks cannot be dotted.
-        Even if the introspected procedure has a rest argument.
-        This is due to the nature of SRFI-253/273-made checks—they cannot be attached to rest arguments.
-        Even on implementations that support rest arguments in <code>*-checked</code> macros.
-        <ul>
-          <li> This in particular might mean that procedures defined with <code>case-lambda(-checked)</code> only get checks for the required arguments.
-            But this glaring under-design of this SRFI is offset by the fact that multiple-arity procedures are problematic in many ways when it comes to checks.
-        </ul>
+      <li> The list of checks can be dotted, providing type for the rest argument as the dotted tail.
+      <li> A single procedure can be returned instead of the list of checks, in case the <var>proc</var> only accepts a typed rest argument.
     </ul>
   <li> The second value is a list of checks (procedures), one per returned value of the procedure. Any of these return checks may be <code>#f</code>.
 </ul>
@@ -183,10 +177,12 @@ and allows peeking behind the implementation scaffolds for types.
 </p>
 
 <div class=note>
+  <p>
     Rationale: this procedure is needed to get checks for both arguments and return values.
     Fitting all of these into a single returned check is nigh impossible.
     Earlier drafts of SRFI-273 included such a procedure / syntax, <code>check-procedure-of?</code>, but it was removed for reasons.
     Thus this particular operation and its return values.
+  </p>
 </div>
 
 <pre>
@@ -194,15 +190,14 @@ and allows peeking behind the implementation scaffolds for types.
 ;; =&gt; (#f) ;; No check due to “any” type
 ;; =&gt; (<a href="https://standards.scheme.org/r7rs-html5/index.html#boolean?">#&lt;procedure boolean?&gt;</a>)
 (procedure-check-of <a href="https://standards.scheme.org/r7rs-html5/index.html#map">map</a>)
-;; Notice the lack of optional arguments checks
-;; =&gt; (#&lt;procedure procedure?&gt; <a href="https://standards.scheme.org/r7rs-html5/index.html#list?">#&lt;procedure list?&gt;</a>)
+;; =&gt; (#&lt;procedure procedure?&gt; <a href="https://standards.scheme.org/r7rs-html5/index.html#list?">#&lt;procedure list?&gt;</a> . #&lt;procedure list?&gt;)
 ;; =&gt; (#&lt;procedure list?&gt;)
 (procedure-check-of <a href="https://standards.scheme.org/r7rs-html5/index.html#+">+</a>)
-;; =&gt; () ;; + has no required arguments
-;; =&gt; (<a href="https://standards.scheme.org/r7rs-html5/index.html#number?">#&lt;procedure number?&gt;</a>)
+;; =&gt; <a href="https://standards.scheme.org/r7rs-html5/index.html#number?">#&lt;procedure number?&gt;</a> ;; Rest argument only
+;; =&gt; (#&lt;procedure number?&gt;)
 (procedure-check-of procedure-check-of)
 ;; =&gt; (#&lt;procedure procedure?&gt;)
-;; =&gt; (#&lt;procedure (<a href="https://srfi.schemers.org/srfi-235/srfi-235.html#specification:~:text=%28%28-,disjoin%20predicate%20%2E%2E%2E,-%29%20arg%20%2E%2E%2E%29">disjoin</a> list? boolean?)&gt; #&lt;procedure (disjoin list? boolean?)&gt;)
+;; =&gt; (#&lt;procedure (<a href="https://srfi.schemers.org/srfi-235/srfi-235.html#specification:~:text=%28%28-,disjoin%20predicate%20%2E%2E%2E,-%29%20arg%20%2E%2E%2E%29">disjoin</a> pair? procedure? boolean?)&gt; #&lt;procedure (disjoin list? boolean?)&gt;)
 </pre>
 
 <h4 id=spec--check--value>(srfi 283) check-of obj ⟹ procedure | #f <a href="#spec--check--value">#</a></h4>
@@ -235,8 +230,6 @@ and allows peeking behind the implementation scaffolds for types.
 
 <p>
   Returns a <a href="#spec--check--procedure">procedure-check-of</a>-like values—two pairs / booleans of types.
-  Unlike <code>procedure-check-of</code>, returning a dotted list for arguments is possible,
-  as some implementations type the rest argument too.
   Returning a single type object as first value for procedures (like <code>+</code>) that accept a single rest argument is possible, too.
 </p>
 

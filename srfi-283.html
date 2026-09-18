@@ -203,9 +203,7 @@ and allows peeking behind the implementation scaffolds for types.
 <h4 id=spec--check--value>(srfi 283) check-of obj ⟹ procedure | #f <a href="#spec--check--value">#</a></h4>
 
 <p>
-  Returns the most exact check matching the value, as a procedure that this value must satisfy.
-  Interpretation of “the most exact check” is left to the implementor.
-  (It might overlap with <a href="https://www.lispworks.com/documentation/HyperSpec/Body/26_glo_a.htm#actual_array_element_type">Common Lisp’s concept of “actual type”</a>.)
+  Returns the check matching the <var>obj</var>, as a procedure that this <var>obj</var> must satisfy.
   The implementation can also return <code>#f</code> in case the check cannot be introspected &mdash;
   or at any time really.
 </p>
@@ -221,7 +219,7 @@ and allows peeking behind the implementation scaffolds for types.
 
 <p>
   While checks might be a useful and portable way to reason about values,
-  a more concrete and close-to-the-metal / implementation-specific introspection might be needed.
+  a more concrete / close-to-the-metal / flexible / implementation-specific introspection might be needed.
   Like… types.
   This section details on the forms working with types instead of checks.
 </p>
@@ -246,6 +244,13 @@ and allows peeking behind the implementation scaffolds for types.
 </p>
 
 <h3 id=spec--util>Utilities <a href="#spec--util">#</a></h3>
+
+<p>
+  Neither checks nor types are particularly easy to work with.
+  They need some support to be introspectable and readable.
+  Thus these utilities.
+</p>
+
 <h4 id=spec--util--check-to-sexp>(srfi 283) check-&gt;sexp proc ⟹ list | symbol | #f <a href="#spec--util--check-to-sexp">#</a></h4>
 
 <p>

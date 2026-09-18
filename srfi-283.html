@@ -164,7 +164,7 @@ and allows peeking behind the implementation scaffolds for types.
     These checks (whenever non-false) must return a true value when applied to a respective argument that the <var>proc</var> may accept.
     Otherwise, it is an error, as per SRFI 253.
     <ul>
-      <li> The list of checks can be dotted, providing the check that all optional arguments must satisfy.
+      <li> The list of checks can be dotted, with dotted tail providing the check that <strong>every</strong> optional arguments must satisfy.
       <li> A single procedure can be returned instead of the list of checks, in case the <var>proc</var> only accepts a typed rest argument.
     </ul>
   <li> The second value is a list of checks (procedures), one per returned value of the procedure. Any of these return checks may be <code>#f</code>.

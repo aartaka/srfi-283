@@ -292,6 +292,15 @@ and allows peeking behind the implementation scaffolds for types.
   or returns <code>#f</code> (in case the conversion is unsuccessful).
 </p>
 
+<pre>
+(check-&gt;sexp procedure?)
+;; procedure? ;; Symbol
+(check-&gt;sexp (disjoin procedure? integer?))
+;; (disjoin procedure? integer?) ;; s-expression
+(check-&gt;sexp some-unknown-or-non-inspectable-check)
+;; #f
+</pre>
+
 <h4 id=spec--util--type-to-check>(srfi 283) type-&gt;check implementation-specific ⟹ procedure | #f <a href="#spec--util--type-to-check">#</a></h4>
 
 <p>

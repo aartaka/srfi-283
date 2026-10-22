@@ -240,17 +240,17 @@ and allows peeking behind the implementation scaffolds for types.
 <pre>
 ;; Using Chibi Scheme syntax
 (procedure-type-of +)
-;; => #&lt;type "Number"&gt;
-;; => (#&lt;type "Number"&gt;)
+;; =&gt; #&lt;type "Number"&gt;
+;; =&gt; (#&lt;type "Number"&gt;)
 (procedure-type-of vector-ref)
-;; => (#&lt;type "Vector"&gt; #&lt;type "Integer"&gt;)
-;; => (#f)
+;; =&gt; (#&lt;type "Vector"&gt; #&lt;type "Integer"&gt;)
+;; =&gt; (#f)
 (procedure-type-of substring)
-;; => (#&lt;type "String"&gt; #&lt;type "Integer"&gt; . #&lt;type "Integer"&gt;)
-;; => (#&lt;type "String"&gt;)
+;; =&gt; (#&lt;type "String"&gt; #&lt;type "Integer"&gt; . #&lt;type "Integer"&gt;)
+;; =&gt; (#&lt;type "String"&gt;)
 (procedure-type-of procedure-type-of)
-;; => (#&lt;type "Procedure"&gt;)
-;; => (#f)
+;; =&gt; (#&lt;type "Procedure"&gt;)
+;; =&gt; (#f)
 </pre>
 
 <h4 id=spec--type--value>(srfi 283) type-of obj ⟹ implementation-specific <a href="#spec--type--value">#</a></h4>
@@ -263,9 +263,9 @@ and allows peeking behind the implementation scaffolds for types.
 <pre>
 ;; Examples from Chibi Scheme
 (type-of 3)
-;; #&lt;type "Integer"&gt;
+;; =&gt; #&lt;type "Integer"&gt;
 (type-of vector-copy!)
-;; #&lt;type "Procedure"&gt;
+;; =&gt; #&lt;type "Procedure"&gt;
 </pre>
 
 <h3 id=spec--util>Utilities <a href="#spec--util">#</a></h3>
@@ -294,11 +294,11 @@ and allows peeking behind the implementation scaffolds for types.
 
 <pre>
 (check-&gt;sexp procedure?)
-;; procedure? ;; Symbol
+;; =&gt; procedure? ;; Symbol
 (check-&gt;sexp (disjoin procedure? integer?))
-;; (disjoin procedure? integer?) ;; s-expression
+;; =&gt; (disjoin procedure? integer?) ;; S-expression
 (check-&gt;sexp some-unknown-or-non-inspectable-check)
-;; #f
+;; =&gt; #f
 </pre>
 
 <h4 id=spec--util--type-to-check>(srfi 283) type-&gt;check implementation-specific ⟹ procedure | #f <a href="#spec--util--type-to-check">#</a></h4>

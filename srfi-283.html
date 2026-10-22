@@ -301,13 +301,13 @@ and allows peeking behind the implementation scaffolds for types.
 ;; =&gt; #f
 </pre>
 
-<h4 id=spec--util--type-to-check>(srfi 283) type-&gt;check implementation-specific ⟹ procedure | #f <a href="#spec--util--type-to-check">#</a></h4>
+<h4 id=spec--util--type-to-check>(srfi 283) type-&gt;check type ⟹ procedure | #f <a href="#spec--util--type-to-check">#</a></h4>
 
 <p>
   As implementation-specific types are inherently… implementation-specific,
   one needs a way to portably handle them.
   Converting these to checks is the easiest way to do so.
-  <code>type-&gt;check</code> does exactly that—it takes an implementation-specific type object and returns a check matching it.
+  <code>type-&gt;check</code> does exactly that—it takes an implementation-specific <var>type</var> object and returns a check matching it.
   Or <code>#f</code> in case this check cannot be inferred for some reason.
 </p>
 

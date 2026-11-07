@@ -269,8 +269,10 @@ and allows peeking behind the implementation scaffolds for types.
 ;; =&gt; ([#&lt;type "Number"&gt; (#&lt;type "Number"&gt;)])
 (procedure-types-of vector-ref)
 ;; =&gt; ([(#&lt;type "Vector"&gt; #&lt;type "Integer"&gt;) (#f)])
-(procedure-types-of substring)
-;; =&gt; ([(#&lt;type "String"&gt; #&lt;type "Integer"&gt; . #&lt;type "Integer"&gt;) (#&lt;type "String"&gt;)])
+(procedure-types-of string-copy)
+;; =&gt; ([(#&lt;type "String"&gt;) (#&lt;type "String"&gt;)]
+       [(#&lt;type "String"&gt; #&lt;type "Integer"&gt;) (#&lt;type "String"&gt;)]
+       [(#&lt;type "String"&gt; #&lt;type "Integer"&gt; #&lt;type "Integer"&gt;) (#&lt;type "String"&gt;)])
 (procedure-types-of procedure-types-of)
 ;; =&gt; ([(#&lt;type "Procedure"&gt;) (#f)])
 </pre>

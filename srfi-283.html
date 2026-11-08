@@ -339,6 +339,26 @@ and allows peeking behind the implementation scaffolds for types.
   Or <code>#f</code> in case this check cannot be inferred for some reason.
 </p>
 
+<p>
+  So, to get a human / machine readable representation of a type one may use something like:
+</p>
+
+<pre>
+(define (type-&gt;sexp type)
+  (cond
+   [(cond
+     [type =&gt; type-&gt;check]
+     [else #f])
+    =&gt; check-&gt;sexp]
+   [else #f]))
+;; Or, using <a href="https://srfi.schemers.org/srfi-2/srfi-2.html">SRFI-2 and-let*</a>
+(define (type-&gt;sexp type)
+  (and-let* ([type type]
+             [check (type-&gt;check type)]
+             [sexp (check-&gt;sexp check)])
+    sexp))
+</pre>
+
 <h4 id=spec--util--symbol>Symbol Type Introspection</h4>
 
 <p>

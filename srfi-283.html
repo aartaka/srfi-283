@@ -35,32 +35,38 @@ SPDX-License-Identifier: MIT
     </ul>
 
 <h2 id="toc">Table of Contents</h2>
-
 <ul>
-  <li> <a href="#abstract">Abstract</a>
-  <li> <a href="#rationale">Rationale</a>
-  <li> <a href="#spec">Specification</a>
+  <li><a href="#rationale">Rationale</a></li>
+  <li>
+    <a href="#spec">Specification</a>
     <ul>
-      <li> <a href="#spec--check">Check-level API</a>
+      <li>
+        <a href="#spec--check">Check-level API #</a>
         <ul>
-          <li> <a href="#spec--check--procedure">procedure-checks-of proc</a>
-          <li> <a href="#spec--check--value">check-of obj</a>
+          <li><a href="#spec--check--procedure">procedure-checks-of proc ⟹ &lt;signatures>#</a></li>
+          <li><a href="#spec--check--value">check-of obj ⟹ procedure | #f #</a></li>
         </ul>
-      <li> <a href="#spec--type">Type-level API</a>
+      </li>
+      <li>
+        <a href="#spec--type">Type-level API</a>
         <ul>
-          <li> <a href="#spec--type--procedure">procedure-types-of proc</a>
-          <li> <a href="#spec--type--value">type-of obj</a>
+          <li><a href="#spec--type--procedure">procedure-types-of proc ⟹ &lt;signatures> (modified) #</a></li>
+          <li><a href="#spec--type--value">type-of obj ⟹ implementation-specific #</a></li>
         </ul>
-      <li> <a href="#spec--util">Utilities</a>
+      </li>
+      <li>
+        <a href="#spec--util">Utilities #</a>
         <ul>
-          <li> <a href="#spec--util--check-to-sexp">check-&gt;sexp proc</a>
-          <li> <a href="#spec--util--type-to-check">type-&gt;check proc</a>
-          <li> <a href="#spec--util--symbol">Symbol Type Introspection</a></li>
+          <li><a href="#spec--util--check-to-sexp">check->sexp proc ⟹ list | symbol | #f #</a></li>
+          <li><a href="#spec--util--type-to-check">type->check type ⟹ procedure | #f #</a></li>
+          <li><a href="#spec--util--symbol">Symbol Type Introspection</a></li>
         </ul>
+      </li>
     </ul>
-    <li> <a href="#implementation">Implementation</a>
-    <li> <a href="#acknowledgements">Acknowledgements</a>
-    <li> <a href="#copyright">Copyright</a>
+  </li>
+  <li><a href="#implementation">Implementation</a></li>
+  <li><a href="#acknowledgements">Acknowledgements</a></li>
+  <li><a href="#copyright">Copyright</a></li>
 </ul>
 
 <h2 id="abstract">Abstract</h2>

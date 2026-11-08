@@ -181,6 +181,10 @@ and allows peeking behind the implementation scaffolds for types.
     <a href="https://standards.scheme.org/r7rs-html5/index.html#case-lambda">case-lambda</a>
     or implementation-specific generic procedure facilities.
   <li> Every signature can be either required-only, required+rest, or rest-only.
+    <ul>
+      <li> <a href="https://practical-scheme.net/wiliki/schemexref.cgi?Concept%3AExtendedLambdaList">Extended lambda lists</a>
+        are conveniently ignored by this SRFI, unless it’s <a href="#spec--type--procedure">procedure-types-of</a>.
+    </ul>
   <li> Every argument, including rest argument, can have a check procedure attached, or it might not have, thus <code>#f</code> as “any value” placeholder.
 </ul>
 

@@ -312,7 +312,7 @@ and allows peeking behind the implementation scaffolds for types.
 <p>
   <code>check-&gt;sexp</code> converts the passed-in check procedure
   into a symbol (in case of simple predicates, like <code>integer?</code>),
-  list (for more complex ones, like <code>(cut eqv? &lt;> 3)</code>),
+  list (for more complex ones, like <code>(<a href="https://srfi.schemers.org/srfi-26/srfi-26.html">cut</a> <a href="https://standards.scheme.org/r7rs-html5/index.html#eqv?">eqv?</a> &lt;> 3)</code>),
   or returns <code>#f</code> (in case the conversion is unsuccessful).
 </p>
 

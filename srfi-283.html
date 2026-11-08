@@ -185,6 +185,10 @@ and allows peeking behind the implementation scaffolds for types.
 </ul>
 
 <pre>
+(procedure-checks-of not-introspectable)
+;; =&gt; #f
+(procedure-checks-of identity)
+;; =&gt; ([(#f) (#f)])
 ;; Square brackets are used as parentheses alternative, for readability
 (procedure-checks-of <a href="https://standards.scheme.org/r7rs-html5/index.html#procedure?">procedure?</a>)
 ;; =&gt; ([(#f) (<a href="https://standards.scheme.org/r7rs-html5/index.html#boolean?">#&lt;procedure boolean?&gt;</a>)])

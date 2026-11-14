@@ -162,21 +162,21 @@ and allows peeking behind the implementation scaffolds for types.
 
 <pre>
 &lt;signatures&gt; :
-   #f                         ;; Signatures unknown
+   #f                          ;; Signatures unknown
    | ((&lt;args&gt; &lt;returns&gt;) ...)
 
 &lt;args&gt; :
-   &lt;check&gt;                    ;; Single rest argument
-   | (&lt;check&gt; ...)            ;; Non-variadic signature
-   | (&lt;check&gt; ... . &lt;check&gt;)  ;; Variadic / dotted / rest signature
+   &lt;check&gt;                     ;; Single rest argument
+   | (&lt;check&gt; ...)             ;; Non-variadic signature
+   | (&lt;check&gt; ... . &lt;check&gt;)   ;; Variadic / dotted / rest signature
 
 &lt;returns&gt; :
-   #f
-   | (&lt;check&gt; ...)
+   #f                          ;; The number and format of return values is unknown
+   | (&lt;check&gt; ...)             ;; Exact number of return values conforming to provided checks
 
 &lt;check&gt; :
-   #f                         ;; Any value
-   | &lt;procedure&gt;              ;; Value conforming to the procedure check, as per SRFI 253
+   #f                          ;; Any value
+   | &lt;procedure&gt;               ;; Value conforming to the procedure check, as per SRFI 253
 </pre>
 
 <p>

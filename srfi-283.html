@@ -213,6 +213,10 @@ and allows peeking behind the implementation scaffolds for types.
 ;; =&gt; ([(<a href="https://standards.scheme.org/r7rs-html5/index.html#vector?">#&lt;procedure vector?&gt;</a>) (#&lt;procedure vector?&gt;)]
        [(#&lt;procedure vector?&gt; #&lt;procedure integer?&gt;) (#&lt;procedure vector?&gt;)]
        [(#&lt;procedure vector?&gt; #&lt;procedure integer?&gt; #&lt;procedure integer?&gt;) (#&lt;procedure vector?&gt;)])
+;; or, depending on what vector-copy compiles to:
+;; =&gt; ([(#&lt;procedure vector?&gt; . #&lt;procedure integer?&gt;) (#&lt;procedure vector?&gt;)])
+;; or even:
+;; =&gt; ([(#&lt;procedure vector?&gt; . #f) (#&lt;procedure vector?&gt;)])
 (procedure-checks-of procedure-check-of)
 ;; =&gt; ([(#&lt;procedure procedure?&gt;) (#&lt;procedure (<a href="https://srfi.schemers.org/srfi-235/srfi-235.html#specification:~:text=%28%28-,disjoin%20predicate%20%2E%2E%2E,-%29%20arg%20%2E%2E%2E%29">disjoin</a> boolean? pair?)&gt;)])
 </pre>

@@ -16,6 +16,7 @@ SPDX-License-Identifier: MIT
           border: 0.1em solid var(--fg);
           border-radius: 0.2em;
           padding: 1em;
+          margin: 1em 0em;
       }
     </style>
   </head>
@@ -243,6 +244,15 @@ and allows peeking behind the implementation scaffolds for types.
 <p>
   While intimidating, it’s unlikely to ever reach this level of complexity
   as most callers will only be interested in a subset of the returned signatures.
+</p>
+</div>
+
+<div class=note>
+<p>
+  Note also that
+  the argument signature for a variadic-only procedure with unknown variadic type
+  and the signature for a procedure with unknown arguments and their types are the same—<code>#f</code>.
+  This is a corner case that’s too rare, inconsequential, and complicated to be handled in this SRFI.
 </p>
 </div>
 

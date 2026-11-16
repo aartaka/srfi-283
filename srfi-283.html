@@ -379,9 +379,8 @@ and allows peeking behind the implementation scaffolds for types.
 
 <p>
   Early drafts of this SRFI included <code>symbol-check-of</code> and <code>symbol-type-of</code> procedures.
-  The check / type metadata was attached to the symbol.
   These were supposed to be useful in case the domain of the symbol was wider than the domain of the value currently bound to it,
-  say with a symbol restricted to reals, while its value is an exact integer.
+  say with a symbol restricted to reals, while its value was an exact integer.
   Both procedures were removed because interpretation of a symbol involves questions of environment management and evaluation.
   These are too expansive for a simple SRFI like this one, thus the removal.
 </p>
